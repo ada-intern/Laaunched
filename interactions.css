@@ -1,0 +1,100 @@
+/* ===================================
+   INTERACTIVITY STYLES
+   - Custom Cursor
+   - 3D Tilt Support
+=================================== */
+
+/* Custom Cursor */
+body {
+    cursor: none;
+    /* Hide default cursor */
+}
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate3d(-50%, -50%, 0);
+    transition: width 0.3s, height 0.3s, border-color 0.3s, background-color 0.3s;
+    mix-blend-mode: difference;
+}
+
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate3d(-50%, -50%, 0);
+
+}
+
+/* Hover State */
+.custom-cursor.cursor-hover {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: transparent;
+    backdrop-filter: blur(2px);
+}
+
+.cursor-dot.cursor-hover {
+    width: 12px;
+    /* Slightly larger dot */
+    height: 12px;
+    margin-left: -6px;
+    margin-top: -6px;
+}
+
+/* Mobile: Enable default cursor */
+@media (max-width: 768px) {
+    body {
+        cursor: auto;
+    }
+
+    .custom-cursor,
+    .cursor-dot {
+        display: none;
+    }
+}
+
+/* 3D Tilt Container Support */
+.container {
+    perspective: 1000px;
+    /* Depth for 3D effect */
+}
+
+.content-wrapper {
+    transform-style: preserve-3d;
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+    /* Smooth but responsive */
+}
+
+/* Ensure children maintain z-axis rendering */
+.badge,
+.title,
+.subtitle,
+.launch-btn {
+    transform: translateZ(20px);
+    /* Pop out slightly */
+}
+
+.launch-btn {
+    transform: translateZ(40px);
+    /* Button pops out more */
+}
+
+/* Unicorn Studio background z-index fix */
+#unicorn-bg {
+    z-index: -1 !important;
+}
