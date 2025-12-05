@@ -113,8 +113,8 @@ function initCustomCursor() {
         const dx = mouseX - cursorX;
         const dy = mouseY - cursorY;
 
-        cursorX += dx * 0.15; // Smooth factor
-        cursorY += dy * 0.15;
+        cursorX += dx * 0.25; // Smooth factor increased for responsiveness
+        cursorY += dy * 0.25;
 
         cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate3d(-50%, -50%, 0)`;
 
