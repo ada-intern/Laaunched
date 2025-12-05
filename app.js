@@ -8,8 +8,71 @@ const countWrapper = document.getElementById("count-wrapper");
 const redirectText = document.getElementById("redirect-text");
 const flash = document.getElementById("flash");
 const rocket = document.getElementById("rocket");
+const bgMusic = document.getElementById("bg-music");
 
 let interval;
+
+/* -----------------------------------------
+   BACKGROUND MUSIC
+----------------------------------------- */
+function initBackgroundMusic() {
+  const bgMusic = document.getElementById("bg-music");
+
+  if (!bgMusic) {
+    console.error("Background music element not found!");
+    return;
+  }
+
+  // Ensure loop is set
+  bgMusic.loop = true;
+  bgMusic.volume = 0.2; // Low volume (20%)
+
+  // Add error handler
+  bgMusic.addEventListener('error', (e) => {
+    console.error("Audio error:", e, bgMusic.error);
+  });
+
+  // Add loaded handler
+  bgMusic.addEventListener('canplay', () => {
+    console.log("Audio loaded and ready to play");
+  });
+
+  // Try to play immediately
+  function tryPlay() {
+    bgMusic.play()
+      .then(() => {
+        console.log("Background music playing!");
+      })
+      .catch(error => {
+        console.log("Autoplay blocked, will try on user interaction:", error.message);
+
+        // Add one-time interaction listeners
+        const startAudio = () => {
+          bgMusic.play()
+            .then(() => console.log("Music started after interaction"))
+            .catch(e => console.error("Failed to play:", e));
+        };
+
+        document.addEventListener('click', startAudio, { once: true });
+        document.addEventListener('keydown', startAudio, { once: true });
+        document.addEventListener('touchstart', startAudio, { once: true });
+      });
+  }
+
+  // Try immediately and on load
+  if (bgMusic.readyState >= 3) {
+    tryPlay();
+  } else {
+    bgMusic.addEventListener('canplaythrough', tryPlay, { once: true });
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBackgroundMusic);
+} else {
+  initBackgroundMusic();
+}
 
 /* -----------------------------------------
         VOICE COUNTDOWN
