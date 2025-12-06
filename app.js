@@ -387,7 +387,8 @@ function ConfettiPiece() {
   };
 }
 
-for (let i = 0; i < 300; i++) confettiPieces.push(new ConfettiPiece());
+// Reduced count from 300 to 80 for cleaner, realistic look
+for (let i = 0; i < 90; i++) confettiPieces.push(new ConfettiPiece());
 
 (function animateConfetti() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);

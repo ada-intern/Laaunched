@@ -203,8 +203,8 @@ body {
 }
 
 .logo-circle {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
   backdrop-filter: blur(20px) saturate(180%);
@@ -1002,7 +1002,21 @@ body {
   .container {
     padding: 1rem;
     gap: 1.5rem;
+    width: 95%;
+    /* Ensure adequate width */
   }
+
+  /* Fix Ring Stacking/Sizing on Mobile */
+  .ring {
+    width: 240px;
+    /* Force smaller size on mobile */
+    height: 240px;
+  }
+
+  /* Scale SVG internals if needed via transform, 
+     but simpler to just set width/height on logic if SVG lacks viewBox scaling.
+     However, the SVG has viewBox="0 0 280 280", so CSS width/height should scale it. 
+  */
 
   .logo-circle {
     width: 60px;
@@ -1020,6 +1034,8 @@ body {
 
   .subtitle {
     font-size: 1rem;
+    padding: 0 1rem;
+    /* Prevent edge touching */
   }
 
   .launch-btn {
@@ -1042,16 +1058,122 @@ body {
 }
 
 @media (max-width: 480px) {
+  .title-main {
+    font-size: clamp(3rem, 12vw, 5rem);
+    /* Reduce massive font on small mobile */
+  }
+
   .title-line {
     font-size: 1.2rem;
   }
 
   .launch-btn {
     padding: 1rem 2rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+    /* Slightly smaller text */
+    width: 100%;
+    /* Full width button easier to tap */
+    max-width: 300px;
   }
 
   .btn-icon {
     font-size: 1.2em;
   }
+
+  /* Further reduction for smallest screens */
+  .ring {
+    width: 200px;
+    height: 200px;
+    padding: 5px;
+    /* Added padding as requested */
+  }
+
+  .energy-circles {
+    width: 220px;
+    height: 220px;
+  }
+
+  .circle {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* Precise centering for mobile */
+  .energy-circles {
+    width: 220px;
+    height: 220px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Start from center */
+    position: absolute;
+    margin: 0;
+  }
+
+  /* Override any previous relative positioning that might conflict */
+  .circle {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    /* Ensure they layer correctly */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    /* Reset specialized transforms if they cause drift, or keep animation */
+    /* keeping animation but ensuring base position is centered */
+  }
+
+  /* Adjust animation keyframes for mobile specifically if needed, 
+     but standard transform: translate(-50%, -50%) might fight with scale logic 
+     if scale is the only transform. The animation uses 'transform: scale(...)'.
+     So we should wrap circles in a centering div or reset transform origin.
+  */
+
+  .countdown {
+    font-size: clamp(3rem, 10vw, 4rem);
+    z-index: 10;
+  }
+
+  /* Disable 3D effects on mobile for crisp text and performance */
+  .container {
+    perspective: none !important;
+  }
+
+  .badge,
+  .title,
+  .subtitle,
+  .launch-btn {
+    transform: none !important;
+  }
+
+  /* Redefine animation for mobile to include translation */
+  @keyframes pulseCircleMobile {
+
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(0.85);
+      opacity: 0.5;
+    }
+
+    50% {
+      transform: translate(-50%, -50%) scale(1.15);
+      opacity: 0.9;
+    }
+  }
+
+  .circle {
+    /* Use the mobile-specific animation */
+    animation-name: pulseCircleMobile;
+  }
+}
+
+/* Ensure body doesn't horizontal scroll due to absolute elements, but allow vertical scroll */
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Enable vertical scroll for small screens/landscape */
+  width: 100%;
 }
